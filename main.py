@@ -8,10 +8,12 @@ from termcolor import colored
 
 NFL_URL = "http://www.nfl.com/liveupdate/scorestrip/ss.json"
 NHL_URL = "http://live.nhle.com/GameData/RegularSeasonScoreboardv3.jsonp"
+# TODO: add NBA_URL
 
 def print_week(week, games):
-    print(colored("-------- WEEK {} --------".format(week), 'red'))
+    """Prints Scores. VISITOR: ##  HOME: ##""" 
 
+    print(colored("-------- WEEK {} --------".format(week), 'red'))
     print(colored("VISITOR", 'red'),'\t', colored("HOME", 'blue'))
 
     for game in games:
