@@ -5,40 +5,10 @@ import exceptions
 import sys
 import json
 from termcolor import colored
+import parseNFL
+import parseNHL
 
-NFL_URL = "http://www.nfl.com/liveupdate/scorestrip/ss.json"
-NHL_URL = "http://live.nhle.com/GameData/RegularSeasonScoreboardv3.jsonp"
 # TODO: add NBA_URL
-
-def print_week(week, games):
-    """Prints Scores. VISITOR: ##  HOME: ##""" 
-
-    print(colored("-------- WEEK {} --------".format(week), 'white'))
-    print(colored("VISITOR", 'red'),'\t', colored("HOME", 'blue'))
-
-    day_prev = games[0]['d']
-    print(colored("{}".format(day_prev), 'white'))
-
-    for game in games:
-        day = game['d']
-        time = game['t']
-        home = game['h']
-        visitor = game['v']
-        h_score = game['hs']
-        v_score = game['vs']
-        if day_prev != day:
-            print(colored("{}".format(day), 'white'))
-        print("{:<4s}:{:>3d}\t{:<4s}:{:>3d}".format(visitor, v_score, home, h_score))
-        day_prev = day
-
-def get_json(url):
-    r = requests.get(NFL_URL)
-    j = json.dumps(r.json())
-    j_data = json.loads(j)
-    week = j_data['w']
-    games = j_data['gms']
-
-    return week, games
 
 def main():
     if (len(sys.argv) < 2):
@@ -50,11 +20,13 @@ def main():
     if league.lower() not in  leagues:
         raise exceptions.incorrectLeagueException
     elif league == 'nfl':
-        week, games = get_json(NFL_URL)
+        week, games = parseNFL.get_json()
+        parseNFL.print_week(week, games)
     elif league == 'nhl':
+        games = parseNHL.get_json()
+        parseNHL.print_week(games)
+    elif league == 'nba':
         return 
-
-    print_week(week, games)
 
 
 if __name__ == '__main__':

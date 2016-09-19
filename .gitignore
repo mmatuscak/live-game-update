@@ -1,3 +1,4 @@
 *.pyc
 README
 README.txt
+__pycache__
